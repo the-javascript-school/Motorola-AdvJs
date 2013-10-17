@@ -9,7 +9,3 @@ function sum(){
 	return arguments.length == 1 ? parseArg(arguments[0]) 
 		: parseArg(arguments[0]) + sum.apply(this,[].splice.call(arguments,1));
 }
-
-/*arg = [1,2,3,4]
-sum.apply(this,arg)
-sum(1,2,3,4)*/

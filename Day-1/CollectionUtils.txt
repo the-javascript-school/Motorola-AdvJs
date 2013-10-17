@@ -1,0 +1,29 @@
+function sort(list){
+  for(var i=0;i<list.length-1;i++)
+    for(var j=i+1;j<list.length;j++)
+       if (list[i].id > list[j].id){
+         var temp = list[i];
+         list[i] = list[j];
+         list[j] = temp;
+       }
+}
+function sort(list,comparer){
+  var comparerFn = typeof comparer == "function" ? comparer : function(item1,item2){
+  	return item1[comparer] > item2[comparer] ? 1 : (item1[comparer] < item2[comparer] ? -1 : 0);
+  }
+  for(var i=0;i<list.length-1;i++)
+    for(var j=i+1;j<list.length;j++)
+       if (comparerFn(list[i],list[j]) > 0){
+         var temp = list[i];
+         list[i] = list[j];
+         list[j] = temp;
+       }
+}
+
+min()
+max()
+filter()
+groupBy()
+
+
+
