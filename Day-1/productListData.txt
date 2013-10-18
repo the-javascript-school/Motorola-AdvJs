@@ -11,3 +11,33 @@ products.display = function(){
 	  	console.log(product.id,product.name,product.cost,product.units)
 	}
 }
+
+function Product(id,name,cost,units){
+  var _id = id,
+  	_name = name,
+  	_cost = cost,
+  	_units = units;
+
+  if (this.constructor.name != "Product") return new Product(id,name,cost,units);
+  
+  this.id = function(){
+  	if (arguments.length == 0) return _id;
+  	if (arguments[0] > 0) _id = arguments[0];
+  }
+  this.name = function(){
+  	if (arguments.length == 0) return _name;
+  	if (!!arguments[0]) _name = arguments[0];
+  }
+  this.units = function(){
+  	if (arguments.length == 0) return _units;
+  	if (arguments[0] > 0) _units = arguments[0];
+  }
+  this.cost = function(){
+  	if (arguments.length == 0) return _cost;
+  	if (arguments[0] > 0) _cost = arguments[0];
+  }
+  this.id(id);
+  this.name(name);
+  this.cost(cost);
+  this.units(units);
+}

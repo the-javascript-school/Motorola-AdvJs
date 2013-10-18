@@ -24,6 +24,11 @@ min()
 max()
 filter()
 groupBy()
+join()
 
 
+
+1. a constructor function is invoked with the "new" keyword
+2. in a constructor function, the "this" refers to a new object
+3. if nothin is explicitly returned, the "this" object is returned
 
