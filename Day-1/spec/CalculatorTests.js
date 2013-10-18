@@ -31,7 +31,7 @@ describe("Calculator",function(){
 
 		//Act
 		var result = sum(number1);
-
+		throw new Error("something");
 		//Assert
 		expect(result).toBe(expectedResult);
 	});
@@ -149,6 +149,7 @@ describe("Calculator",function(){
 
 		//Act
 		var result = sum([fn1,fn2]);
+
 
 		//Assert
 		expect(result).toBe(expectedResult);
