@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Task Manager</title>
+	<script src="jquery-1.10.2.js"></script>
 	<style>
 	.completed {
 		color : red;
@@ -10,36 +11,77 @@
 		font-style: italic;
 		font-weight: bold;
 	}
+	#divMessages{
+		position: absolute;
+		bottom: -40px;
+		right: 5px;
+		border: 2px solid black;
+		padding: 5px;
+	}
+	.hint{
+		font-style: italic;
+		color : gray;
+	}
 
 	</style>
 	<script>
 	(function(){
 		function onBtnSaveClick(){
-			var txtTast = document.getElementById("txtTask");
-			var taskName = txtTast.value;
-			var newTaskItem = "<li>" + taskName + "</li>";
-			var ulTaskList = document.getElementById("ulTaskList");
-			ulTaskList.innerHTML += newTaskItem;
+			$("<li>")
+				.html($("#txtTask").val())
+				.hide()
+				.prependTo("#ulTaskList")
+				.slideDown();
+			displayMessage("A new Task is added..!!");
 		}
-		function initialize(){
-			document.getElementById("btnSave").onclick = onBtnSaveClick;
-			assignTaskClicks();
-		}
-		function assignTaskClicks(){
-			var ulTaskList = document.getElementById("ulTaskList");
-			for(var i=0;i<ulTaskList.children.length;i++){
-				var taskItem = ulTaskList.children[i];
-				taskItem.onclick = onTaskItemClick;
-			}
-		}
+		
+		$(function(){
+			$("#btnSave").on('click',onBtnSaveClick) ;
+			$("#btnRemoveCompleted").click(onBtnRemoveCompletedClick);
+			$("#ulTaskList").on("click","li",onTaskItemClick);
+			$("#txtTask")
+				.addClass("hint")
+				.val(hintText)
+				/*.focus(onTaskTxtFocus)
+				.blur(onTaskTxtBlur);*/
+
+				/*.bind("focus",onTaskTxtFocus)
+				.bind("blur",onTaskTxtBlur);*/
+				.bind({
+					focus : onTaskTxtFocus,
+					blur : onTaskTxtBlur 
+				});
+		});
+
 		function onTaskItemClick(){
-			if (this.classList.contains("completed")){
-				this.classList.remove("completed");
-			} else {
-				this.classList.add("completed");
+			$(this).toggleClass("completed");
+		}
+		function onBtnRemoveCompletedClick(){
+			var removedCount = $("#ulTaskList > li.completed").fadeOut(5000,function(){
+				$(this).remove();
+			}).length;
+
+			displayMessage(removedCount + " completed tasks are removed!!");
+		}
+		function displayMessage(msg){
+			$("#divMessages").html(msg).animate({bottom : "5px"},1500).delay(3000).animate({bottom : "-40px"});
+		}
+		var hintText = "[Enter the task]";
+		function onTaskTxtFocus(){
+			var $this = $(this);
+			if ($this.val() === hintText){
+				$this.removeClass("hint");
+				$this.val('');
+			}
+		} 
+		function onTaskTxtBlur(){
+			var $this = $(this);
+			if ($this.val() === ''){
+				$this.addClass("hint");
+				$this.val(hintText);
 			}
 		}
-		window.addEventListener("DOMContentLoaded",initialize);
+		
 	}());
 	
 	</script>
