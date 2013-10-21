@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<style>
+	.completed {
+		color : red;
+		text-decoration: line-through;
+		font-style: italic;
+		font-weight: bold;
+	}
+
+	</style>
+	<script>
+	(function(){
+		function onBtnSaveClick(){
+			var txtTast = document.getElementById("txtTask");
+			var taskName = txtTast.value;
+			var newTaskItem = "<li>" + taskName + "</li>";
+			var ulTaskList = document.getElementById("ulTaskList");
+			ulTaskList.innerHTML += newTaskItem;
+		}
+		function initialize(){
+			document.getElementById("btnSave").onclick = onBtnSaveClick;
+			assignTaskClicks();
+		}
+		function assignTaskClicks(){
+			var ulTaskList = document.getElementById("ulTaskList");
+			for(var i=0;i<ulTaskList.children.length;i++){
+				var taskItem = ulTaskList.children[i];
+				taskItem.onclick = onTaskItemClick;
+			}
+		}
+		function onTaskItemClick(){
+			if (this.classList.contains("completed")){
+				this.classList.remove("completed");
+			} else {
+				this.classList.add("completed");
+			}
+		}
+		window.addEventListener("DOMContentLoaded",initialize);
+	}());
+	
+	</script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<span>Task :</span>
+	<input type="text" name="" id="txtTask">
+	<input type="button" value="Save" id="btnSave">
+	<input type="button" value="Remove Completed" id="btnRemoveCompleted">
+	<ul id="ulTaskList">
+		<li>Task - 1</li>
+		<li>Task - 2</li>
+		<li>Task - 3</li>
+	</ul>
+	<div id="divMessages"></div>
+</body>
+</html>
