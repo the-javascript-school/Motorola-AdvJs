@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+    <script src="../../Scripts/jquery-1.7.1.js"></script>
+    <script>
+        $(function () {
+            $.ajaxSetup({
+                type: "post",
+                dataType: "json",
+                contentType : "application/json"
+            });
+            $("#ajaxBusy")
+                .hide()
+                .ajaxStart(function () {
+                    $(this).show();
+                }).ajaxComplete(function () {
+                    $(this).hide();
+                });
+                    
+            $("#btnAdd").click(function () {
+                var number1 = $("#txtNumber1").val();
+                var number2 = $("#txtNumber2").val();
+                var reqObj = {
+                    Number1: number1,
+                    Number2: number2
+                };
+                //$("#ajaxBusy").show();
+                $.ajax({
+                    url: "/Home/Calculate",
+                    data: JSON.stringify(reqObj),
+                    success: function (res) {
+                        $("#divResult").html(res.Result);
+                        //$("#ajaxBusy").hide();
+                    }
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="ajaxBusy">
+        <img src="/contents/images/ajaxload.gif" alt="Alternate Text" /> Loading...!!
+    </div>
+    <div>
+        Number 1: <input type="text" id="txtNumber1" />
+    </div>
+    <div>
+        Number 2: <input type="text" id="txtNumber2" />
+    </div>
+    <input type="button" name="btnAdd" value="Add" id="btnAdd"/>
+    <div id="divResult"></div>
+</body>
+</html>

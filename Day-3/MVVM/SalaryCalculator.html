@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Salary Calculator</title>
+	<style>
+	body{
+		margin-left: 100px;
+	}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+	function calculateSalary(basic,hra,da,tax){
+			var gross = basic + hra + da,
+				taxable = gross * (tax/100),
+				net = gross - taxable;
+			return net;
+	}
+	function SalaryCalculatorViewModel(){
+		var _basic,
+			_hra,
+			_da,
+			_tax,
+			_salary,
+			_callbacks = {},
+			that = this;
+
+		this.basic = function(){
+			if (arguments.length === 0) return _basic;
+			_basic = arguments[0];
+			triggerModelChangeFor('basic');
+		};
+		this.hra = function(){
+			if (arguments.length === 0) return _hra;
+			_hra = arguments[0];
+			triggerModelChangeFor('hra');
+		};
+		this.da = function(){
+			if (arguments.length === 0) return _da;
+			_da = arguments[0];
+			triggerModelChangeFor('da');
+		};
+		this.tax = function(){
+			if (arguments.length === 0) return _tax;
+			_tax = arguments[0];
+			triggerModelChangeFor('tax');
+		};
+		this.salary = function(){
+			return _salary;
+		};
+		this.calculate = function(){
+			_salary = calculateSalary(this.basic(),this.hra(),this.da(),this.tax());
+			triggerModelChangeFor('salary');
+		};
+		function triggerModelChangeFor(attrName){
+			if (_callbacks[attrName]){
+				var callbackRefs = _callbacks[attrName];
+				for(var i=0;i<callbackRefs.length;i++)
+				{
+					callbackRefs[i].call(that);
+				}
+			}
+		}
+
+		this.addModelChange = function(attrName,callback){
+			if (!_callbacks[attrName]) _callbacks[attrName] = [];
+			_callbacks[attrName].push(callback);
+		}
+	}
+	</script>
+	<script>
+	var viewModel = new SalaryCalculatorViewModel();
+	$(function(){
+		viewModel.addModelChange('salary',function(){
+			$("#divResult").html(viewModel.salary());
+		});
+		viewModel.addModelChange('basic',function(){
+			$("#txtBasic").val(this.basic());
+		});
+		viewModel.addModelChange('hra',function(){
+			$("#txtHra").val(this.hra());
+		});
+		viewModel.addModelChange('da',function(){
+			$("#txtDa").val(this.da());
+		});
+		viewModel.addModelChange('tax',function(){
+			$("#txtTax").val(this.tax());
+		});
+		
+
+		$("#txtBasic").change(function(){
+			viewModel.basic(parseInt(this.value));
+		});
+		$("#txtHra").change(function(){
+			viewModel.hra(parseInt(this.value));
+		});
+		$("#txtDa").change(function(){
+			viewModel.da(parseInt(this.value));
+		});
+		$("#txtTax").change(function(){
+			viewModel.tax(parseInt(this.value));
+		});
+		$("#btnCalculate").click(function(){
+			viewModel.calculate();
+
+		});
+	});
+
+	</script>
+</head>
+<body>
+	<div><span>Basic :</span><input type="text" name="" id="txtBasic"></div>
+	<div><span>HRA :</span><input type="text" name="" id="txtHra"></div>
+	<div><span>DA :</span><input type="text" name="" id="txtDa"></div>
+	<div><span>Tax :</span><input type="text" name="" id="txtTax"></div>
+	<div><input type="button" value="Calculate" id="btnCalculate"></div>
+	<div>
+		<div id="divResult"></div>
+	</div>
+</body>
+</html>

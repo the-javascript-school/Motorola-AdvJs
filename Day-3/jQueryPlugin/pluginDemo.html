@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Plugins</title>
+	<style>
+	.hint{
+		color : gray;
+		font-style : italic;
+	}
+	.myHintStyle{
+		color : green;
+		text-decoration: line-through;
+	}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="jquery.hint.js"></script>
+	<script>
+	
+	$(function(){
+		var result = $(":text[hintText]").hint({hintClass : "myHintStyle"});
+		console.dir(result);
+			
+	});
+
+	</script>
+</head>
+<body>
+	<input type="text" name="" id="" hintText="Id?">
+	<input type="text" name="" id="" hintText="Name?">
+	<input type="text" name="" id="" hintText="Age?">
+	<input type="text" name="" id="" hintText="Salary?">
+</body>
+</html>

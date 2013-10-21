@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<me:ta charset="UTF-8">
+	<title>Ajax Demo</title>
+	<script src="jquery-1.10.2.js"></script>
+	<script src="handlebars.js"></script>
+	<script id="productsListTemplate" type="text/x-handlebars-template">
+		<h3>Products</h3>
+		<table>
+		{{#each products}}
+			<tr>
+				<td>{{id}}</td>
+				<td>{{name}}</td>
+				<td>{{price}}</td>
+			</tr>
+		{{/each}}
+		</table>
+	</script>
+	<script>
+	$(function(){
+		var source   = $("#productsListTemplate").html();
+		var template = Handlebars.compile(source);
+
+		$("#btnLoad").click(function(){
+		/*
+			$.get("partialFragment.html",function(data){
+				$("#divMessage").html(data);
+			},"html");
+		*/
+		//$("#divMessage").load("partialFragment.html");
+			$.getJSON("products.json",function(data){
+				$("#divMessage").html(template(data));
+			});
+		});
+	});
+
+	</script>
+</head>
+<body>
+	<input type="button" value="Load" id="btnLoad">
+	<div id="divMessage"></div>
+</body>
+</html>
